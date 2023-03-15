@@ -1,15 +1,16 @@
 import React from 'react';
+import {filterValueType} from "../App";
 
 type ButtonType = {
-   name: string;
-   callBack: () => void
+   name: filterValueType;
+   ignition: () => void
 
 }
 
 export  const Button = (props: ButtonType) => {
 
    const onClickHandler = () => {
-      props.callBack()
+      props.ignition()
    }
 
    return (

@@ -67,8 +67,8 @@ export const TodoList = (props: ListProps) => {
             </div>
             <ul>{renderedTask} </ul>
             <div>
-               {/*<Button name={'All'} callBack={}/>*/}
-               <button onClick={() => tsarFunction('all')}>All</button>
+               <Button name={'all'} ignition={() => tsarFunction('all')}/>
+               {/*<button onClick={() => tsarFunction('all')}>All</button>*/}
                <button onClick={() => tsarFunction('active')}>Active</button>
                <button onClick={() => tsarFunction('completed')}>Completed</button>
             </div>
