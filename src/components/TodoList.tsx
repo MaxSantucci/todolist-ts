@@ -1,7 +1,9 @@
-import React, {useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import {Button} from "./Button";
+import {filterValueType} from "../App";
 
 export type TaskType = {
-   id: number,
+   id: string,
    title: string,
    isDone: boolean,
 }
@@ -9,22 +11,47 @@ export type TaskType = {
 type ListProps = {
    title: string;
    tasks: Array<TaskType>;
-   removeTask: (taskID: number) => void;
-   // filterTask: (buttonNames: string) => void;
+   removeTask: (taskID: string) => void;
+   changeFilter: (value: filterValueType) => void;
+   addTask: (newTaskTitle: string) => void
 }
 
 export const TodoList = (props: ListProps) => {
-   let [filterValue, setFilterValue] = useState('All')
-   let currentFilter = props.tasks;
-   if(filterValue === "Active") {
-      currentFilter = (props.tasks.filter(a => !a.isDone))
-   }
-   if (filterValue === "Completed") {
-      currentFilter = (props.tasks.filter(a => a.isDone))
+
+   let renderedTask = props.tasks.map((el) => {
+      return (
+         <li key={el.id}>
+            <input type="checkbox" checked={el.isDone}/>
+            <span>{el.title}</span>
+            <button onClick={() => removeTaskHandler(el.id)}>X</button>
+         </li>
+      )
+   })
+
+   const [newTaskTitle, setNewTaskTitle] = useState('');
+
+   const addTaskHandler = () => {
+      props.addTask(newTaskTitle)
+      setNewTaskTitle(' ')
    }
 
-   const filterTask = (buttonNames: string) => {
-      setFilterValue(buttonNames)
+   const textChangeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
+      setNewTaskTitle(e.currentTarget.value)
+   }
+
+   const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+      if (e.code === 'Enter') {
+         addTaskHandler()
+      }
+   }
+
+   const removeTaskHandler = (el: string) => {
+      props.removeTask(el)
+   }
+
+
+   const tsarFunction = (filterValue: filterValueType) => {
+      props.changeFilter(filterValue)
    }
 
    return (
@@ -32,24 +59,18 @@ export const TodoList = (props: ListProps) => {
          <div>
             <h3>{props.title}</h3>
             <div>
-               <input/>
-               <button>+</button>
+               <input
+                  value={newTaskTitle}
+                  onKeyUp={onKeyPressHandler}
+                  onChange={textChangeInputHandler}/>
+               <button onClick={addTaskHandler}>+</button>
             </div>
-            <ul>
-               {currentFilter.map((el) => {
-                  return (
-                     <li key={el.id}>
-                        <button onClick={() => props.removeTask(el.id)}>X</button>
-                        <input type="checkbox" checked={el.isDone}/>
-                        <span>{el.title}</span>
-                     </li>
-                  )
-               })}
-            </ul>
+            <ul>{renderedTask} </ul>
             <div>
-               <button onClick={ () => filterTask("All") }>All</button>
-               <button onClick={ () => filterTask("Active") }>Active</button>
-               <button onClick={ () => filterTask('Completed') }>Completed</button>
+               {/*<Button name={'All'} callBack={}/>*/}
+               <button onClick={() => tsarFunction('all')}>All</button>
+               <button onClick={() => tsarFunction('active')}>Active</button>
+               <button onClick={() => tsarFunction('completed')}>Completed</button>
             </div>
          </div>
       </div>
