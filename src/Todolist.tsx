@@ -1,9 +1,9 @@
 import React, {ChangeEvent, FC} from 'react';
-import {FilterValuesType} from './App';
 import AddItemForm from './AddItemForm';
 import EditableSpan from './EditableSpan';
 import {Button, Checkbox, IconButton, List, ListItem, Typography} from '@mui/material';
 import DeleteSweepIcon from '@mui/icons-material/DeleteSweep';
+import {FilterValuesType} from './AppWithRedux';
 
 type TodoListPropsType = {
    todoListId: string
